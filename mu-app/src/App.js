@@ -23,7 +23,6 @@ class App extends React.Component {
     axios
       .get("https://api.github.com/users/Courtland-Bourgeois/followers")
       .then(res => {
-        console.log(res)
         this.setState({
           myFollowers: res.data
         })

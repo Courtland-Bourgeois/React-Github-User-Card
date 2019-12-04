@@ -8,6 +8,9 @@ const Followers = (props) => {
         <img src={props.card.avatar_url} alt="Avatar" />
         <div className="card-info">
           <h3 className="name">{props.card.login}</h3>
+          <p>{`Profile: `}
+            <a href={props.card.html_url}>{props.card.html_url}</a>
+          </p>
         </div>
       </div>
     </div>
