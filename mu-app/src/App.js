@@ -1,13 +1,29 @@
 import React from 'react';
 import Cards from './components/Cards';
 import Followers from './components/Followers';
+import SearchForm from './components/SearchForm'
 import './App.css';
 import axios from 'axios';
 
 class App extends React.Component {
   state = {
     myGitHub: [],
-    myFollowers: []
+    myFollowers: [],
+    mySearch: ""
+  }
+
+  handleChange = e => {
+    this.setState({
+      mySearch: e.target.value
+    })
+  }
+
+  handleSubmit = e => {
+    e.preventDefault()
+    this.setState({
+      myFollowers: this.state.mySearch,
+      mySearch: ""
+    })
   }
 
   componentDidMount() {
@@ -15,6 +31,7 @@ class App extends React.Component {
       .get("https://api.github.com/users/Courtland-Bourgeois")
       .then(res => {
         this.setState({
+          ...this.state,
           myGitHub: res.data
         })
       })
@@ -24,10 +41,15 @@ class App extends React.Component {
       .get("https://api.github.com/users/Courtland-Bourgeois/followers")
       .then(res => {
         this.setState({
+          ...this.state,
           myFollowers: res.data
         })
       })
       .catch(err => console.log(err))
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    console.log(prevState)
   }
 
   render() {
@@ -36,8 +58,7 @@ class App extends React.Component {
         <div className="header">
           <p>Hello Friends!</p>
         </div>
-        <input />
-        <button>Find Friends!</button>
+        <SearchForm handleChange={this.handleChange} handleSubmit={this.handleSubmit} mySearch={this.state.mySearch} />
         <div className="friends">
           <Cards key={this.state.myGitHub.id} card={this.state.myGitHub} />
           {this.state.myFollowers.map(card => (
